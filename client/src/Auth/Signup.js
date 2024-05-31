@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import PasswordChecklist from "react-password-checklist";
 import pakka from "../assets/pakka.jpg";
+import { firebaseAuth } from "../dependencies/firebaseConfig";
 
 function Signup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("auth")) {
+    if (localStorage.getItem("cini-auth")) {
       navigate("/dash");
     }
   }, []);
@@ -24,33 +26,26 @@ function Signup() {
     setpasswordInputRef(e.target.value);
   };
 
-  const signUpForm = (e) => {
+  const signUpForm = async (e) => {
     e.preventDefault();
     setError("");
     const email = emailInputRef.current.value;
     const name = userName.current.value;
     const age = userAge.current.value;
     const password = passwordInputRef;
-    const regEx = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (email === null || (email === "" && name !== null)) {
-      setMessage("Please enter your email");
-    } else if (email !== "" && !regEx.test(email)) {
-      setMessage("Enter a Valid Email");
-    } else {
-      setMessage("");
-    }
-    if (password === "" && name === null && age === null) {
-      setPassword("");
-    } else if (password === "") {
-      setPassword("Please Check your Credentials");
-    } else {
-      setPassword("");
-    }
-
-    if (email !== null && password !== "") {
-      //pending...
+    try{
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      if (!localStorage.getItem("cini-auth", "true")) {
+        localStorage.setItem("cini-auth", "true");
+      }
+    }catch(err){
+      console.log(err);
     }
   };
+
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if(currentUser) navigate("/dash");
+  })
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-gray-100">
@@ -62,33 +57,32 @@ function Signup() {
             alt="Signup background"
           />
         </div>
-        <div className="p-6 md:p-10 flex flex-col justify-center">
+        <div className="p-6 md:p-7 md:pt-5 flex flex-col justify-center">
           <form onSubmit={signUpForm}>
             <h2 className="text-4xl font-bold text-center mb-9 text-gray-600">
               Signup
             </h2>
             <div className="space-y-4">
               <input
-                className="border p-2 w-full"
+                className="border p-2 w-full text-black"
                 type="text"
                 placeholder="Enter Your Name"
                 ref={userName}
               />
               <input
-                className="border p-2 w-full"
+                className="border p-2 w-full text-black"
                 type="text"
                 placeholder="Enter Your Age"
                 ref={userAge}
               />
               <input
-                className="border p-2 w-full"
+                className="border p-2 w-full text-black"
                 type="text"
                 placeholder="Your Email Address"
                 ref={emailInputRef}
               />
-              <h5 className="text-red-600">{message}</h5>
               <input
-                className="border p-2 w-full"
+                className="border p-2 w-full text-black"
                 type="password"
                 placeholder="Enter Password"
                 value={passwordInputRef}
@@ -104,6 +98,7 @@ function Signup() {
                     "number",
                     "capital",
                   ]}
+                  className="text-black"
                   minLength={8}
                 />
               ) : (

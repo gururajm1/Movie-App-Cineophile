@@ -7,10 +7,19 @@ import tv from '../assets/tv.png'
 
 export default function Hero() {
   const navigate = useNavigate();
+
+  const v1 = "Movies";
+  const v2 = "TV Shows";
+  const v3 = "Originals";
+  const v4 = "Sports";
+  const v5 = "Kids";
+  const v6 = "Sign-Up";
+  const v7 = "Login";
+
   useEffect(() => {
-    // if(auth==true){
-    //   navigate("/dash");
-    // }
+    if(localStorage.getItem("cini-auth")){
+      navigate("/dash");
+    }
   }, [])
   return (
     <div className="flex flex-col min-h-[100dvh] bg-gradient-to-br from-[#1a1a1a] to-[#2c2c2c] text-white">
@@ -24,31 +33,31 @@ export default function Hero() {
         <nav className="ml-auto flex gap-4 sm:gap-6 md:gap-8 lg:gap-10">
           <span
             className="text-sm font-medium hover:underline underline-offset-4 hover:text-[#ff9900] hidden md:block cursor-pointer"
-            onClick={()=>navigate("login")}
+            onClick={() => navigate("login")}
           >
             Movies
           </span>
           <span
             className="text-sm font-medium hover:underline underline-offset-4 hover:text-[#ff9900] hidden lg:block cursor-pointer"
-            onClick={()=>navigate("login")}
+            onClick={() => navigate("login")}
           >
             TV Shows
           </span>
           <span
             className="text-sm font-medium hover:underline underline-offset-4 hover:text-[#ff9900] hidden xl:block cursor-pointer"
-            onClick={()=>navigate("login")}
+            onClick={() => navigate("login")}
           >
             Originals
           </span>
           <span
             className="text-sm font-medium hover:underline underline-offset-4 hover:text-[#ff9900] hidden 2xl:block cursor-pointer"
-            onClick={()=>navigate("login")}
+            onClick={() => navigate("login")}
           >
             Sports
           </span>
           <span
             className="text-sm font-medium hover:underline underline-offset-4 hover:text-[#ff9900] hidden 2xl:block cursor-pointer"
-            onClick={()=>navigate("login")}
+            onClick={() => navigate("login")}
           >
             Kids
           </span>
@@ -57,14 +66,14 @@ export default function Hero() {
           <span
             className="hover:text-[#ff9900] hidden sm:inline-flex mt-2 cursor-pointer"
             variant="outline"
-            onClick={()=>navigate("/signup")}
+            onClick={() => navigate("/signup")}
           >
             Sign-Up
           </span>
           <button
             className="hover:text-[#ff9900] hidden sm:inline-flex mt-2 cursor-pointer"
             variant="outline"
-            onClick={()=> navigate("/login")}
+            onClick={() => navigate("/login")}
           >
             Login
           </button>
