@@ -38,16 +38,18 @@ export default function UserListedMovies() {
       <div className="content flex column">
         <h1>My List</h1>
         <div className="grid flex">
-          {movies.map((movie, index) => {
-            return (
+          {movies.length > 0 ? (
+            movies.map((movie, index) => (
               <Card
                 movieData={movie}
                 index={index}
                 key={movie.id}
                 isLiked={true}
               />
-            );
-          })}
+            ))
+          ) : (
+            <p className="empty-list-message">Your playlist is empty.</p>
+          )}
         </div>
       </div>
     </Container>
@@ -66,5 +68,10 @@ const Container = styled.div`
       flex-wrap: wrap;
       gap: 1rem;
     }
+  }
+
+  .empty-list-message {
+    margin: 20px;
+    color: red;
   }
 `;
