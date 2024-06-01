@@ -44,7 +44,7 @@ export default function UsersPlaylist() {
       <div className="content flex column">
         <h1>My List</h1>
         <div className="grid flex">
-          {movies.length > 0 ? (
+          {movies && movies.length > 0 ? (
             movies.map((movie, index) => (
               <Card
                 movieData={movie}
