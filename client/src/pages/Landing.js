@@ -11,7 +11,7 @@ import { FaPlay } from "react-icons/fa";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import Slider from "../components/Slider";
 
-function Netflix() {
+function Landing() {
   const [isScrolled, setIsScrolled] = useState(false);
   const movies = useSelector((state) => state.netflix.movies);
   const genres = useSelector((state) => state.netflix.genres);
@@ -36,6 +36,12 @@ function Netflix() {
   onAuthStateChanged(firebaseAuth, (currentUser) => {
     if (!currentUser) navigate("/");
   });
+
+  useEffect(() => {
+    if (!localStorage.getItem("cini-auth")) {
+      navigate("/");
+    }
+  }, []);
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
@@ -121,4 +127,4 @@ const Container = styled.div`
     }
   }
 `;
-export default Netflix;
+export default Landing;

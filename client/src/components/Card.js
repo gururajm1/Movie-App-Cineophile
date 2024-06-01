@@ -31,7 +31,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
   }, []);
 
   useEffect(() => {
-    setShowDeleteIcon(location.pathname === "/mylist");
+    setShowDeleteIcon(location.pathname === "/myplaylist");
   }, [location.pathname]);
 
   const addToList = async () => {
@@ -64,7 +64,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
   };
 
   const handleIconClick = () => {
-    if (location.pathname === "/mylist") {
+    if (location.pathname === "/myplaylist") {
       handleRemoveFromLiked();
     } else {
       if (!liked) {
@@ -123,9 +123,9 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                     <BiCheck title="Added to List" style={{ color: "green" }} />
                   )
                 ) : (
-                  location.pathname !== "/mylist" && (
+                  location.pathname !== "/myplaylist" && (
                     <AiOutlinePlus
-                      title="Add to my list"
+                      title="Add to My Playlist"
                       onClick={handleIconClick}
                     />
                   )

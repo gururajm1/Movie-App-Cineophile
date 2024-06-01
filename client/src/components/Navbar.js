@@ -1,6 +1,6 @@
 import { signOut } from "firebase/auth";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { firebaseAuth } from "../dependencies/firebaseConfig";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
@@ -8,27 +8,23 @@ import { useDispatch } from "react-redux";
 import { searchMovies, fetchMovies } from "../store/index";
 
 export default function Navbar({ isScrolled }) {
-  const [showSearch, setShowSearch] = useState(false);
-  const [inputHover, setInputHover] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const handleSearch = (e) => {
-  const query = e.target.value;
-  if (query) {
-    dispatch(searchMovies(query));
-    window.scrollTo(0, 650);
-  } else {
-    dispatch(fetchMovies({ type: "all" }));
-    window.scrollTo(0, 0);
-  }
-};
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    if (query) {
+      dispatch(searchMovies(query));
+      window.scrollTo(0, 650);
+    } else {
+      dispatch(fetchMovies({ type: "all" }));
+      window.scrollTo(0, 0);
+    }
+  };
 
-  const links = [
-    { name: "Home", link: "/" },
-    { name: "TV Shows", link: "/tv" },
-    { name: "Movies", link: "/movies" },
-    { name: "My List", link: "/mylist" },
-  ];
+  const handleNavigation = (link) => {
+    navigate(link);
+  };
 
   return (
     <Container>
@@ -38,40 +34,32 @@ const handleSearch = (e) => {
             CINI MOVIES
           </h1>
           <ul className="links flex">
-            {links.map(({ name, link }) => {
-              return (
-                <li key={name}>
-                  <Link to={link}>{name}</Link>
-                </li>
-              );
-            })}
+            <li>
+              <button onClick={() => handleNavigation("/dash")}>Home</button>
+            </li>
+            <li>
+              <button onClick={() => handleNavigation("/allmovies")}>
+                All-Movies
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavigation("/myplaylist")}>
+                My-Playist
+              </button>
+            </li>
           </ul>
         </div>
         <div className="right flex a-center">
-          <div className={`search ${showSearch ? "show-search" : ""}`}>
-            <button
-              onFocus={() => setShowSearch(true)}
-              onBlur={() => {
-                if (!inputHover) {
-                  setShowSearch(false);
-                }
-              }}
-            >
+          <div className="search">
+            <button>
               <FaSearch />
             </button>
-            <input
-              type="text"
-              placeholder="Search"
-              onMouseEnter={() => setInputHover(true)}
-              onMouseLeave={() => setInputHover(false)}
-              onBlur={() => {
-                setShowSearch(false);
-                setInputHover(false);
-              }}
-              onChange={handleSearch}
-            />
+            <input type="text" placeholder="Search" onChange={handleSearch} />
           </div>
-          <button onClick={() => signOut(firebaseAuth)} className="hover:text-red-500">
+          <button
+            onClick={() => signOut(firebaseAuth)}
+            className="text-red-500 font-semibold text-lg underline decoration-gray-500"
+          >
             Logout
           </button>
         </div>
@@ -107,9 +95,15 @@ const Container = styled.div`
         list-style-type: none;
         gap: 2rem;
         li {
-          a {
+          button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
             color: white;
-            text-decoration: none;
+            font-size: 1rem;
+            &:hover {
+              text-decoration: underline;
+            }
           }
         }
       }
@@ -128,46 +122,34 @@ const Container = styled.div`
           font-size: 1.2rem;
         }
       }
-      .search {
-        display: flex;
-        gap: 0.4rem;
-        align-items: center;
-        justify-content: center;
-        padding: 0.2rem;
-        padding-left: 0.5rem;
-        button {
-          background-color: transparent;
-          border: none;
-          &:focus {
-            outline: none;
-          }
-          svg {
-            color: white;
-            font-size: 1.2rem;
-          }
-        }
-        input {
-          width: 0;
-          opacity: 0;
-          visibility: hidden;
-          transition: 0.3s ease-in-out;
-          background-color: transparent;
-          border: none;
-          color: white;
-          &:focus {
-            outline: none;
-          }
-        }
+    }
+  }
+
+  .search {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 0.2rem;
+    padding-left: 0.5rem;
+    background-color: black; /* Set background color */
+    border: 1px solid white; /* Set border color */
+    button {
+      background-color: transparent;
+      border: none;
+      &:focus {
+        outline: none;
       }
-      .show-search {
-        border: 1px solid white;
-        background-color: rgba(0, 0, 0, 0.6);
-        input {
-          width: 100%;
-          opacity: 1;
-          visibility: visible;
-          padding: 0.3rem;
-        }
+      svg {
+        color: white;
+        font-size: 1.2rem;
+      }
+    }
+    input {
+      background-color: transparent;
+      border: none;
+      color: white;
+      &:focus {
+        outline: none;
       }
     }
   }

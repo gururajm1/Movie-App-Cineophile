@@ -9,6 +9,12 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (localStorage.getItem("cini-auth")) {
+      navigate("/dash");
+    }
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
         navigate("/dash");

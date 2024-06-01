@@ -9,7 +9,7 @@ import Navbar from "../components/Navbar";
 import { getUsersLikedMovies } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function UserListedMovies() {
+export default function UsersPlaylist() {
   const movies = useSelector((state) => state.netflix.movies);
   const dispatch = useDispatch();
   const navigate = useNavigate();

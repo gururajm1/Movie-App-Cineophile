@@ -25,6 +25,12 @@ function MoviePage() {
   }, []);
 
   useEffect(() => {
+    if (!localStorage.getItem("cini-auth")) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
     if (genresLoaded) {
       dispatch(fetchMovies({ genres, type: "movie" }));
     }

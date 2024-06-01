@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import video from '../assets/trailer.mp4'
+import video from '../assets/trailer.mp4';
+
 export default function Player() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!localStorage.getItem("cini-auth")){
+      navigate("/");
+    }
+  }, []);
 
   return (
     <Container>
