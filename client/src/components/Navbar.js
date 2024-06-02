@@ -30,16 +30,17 @@ export default function Navbar({ isScrolled }) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("cini-auth");
     signOut(firebaseAuth);
+    localStorage.removeItem("cini-auth");
+    navigate("/");
   };
 
   return (
     <Container>
       <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
         <div className="left flex a-center">
-          <h1 className="brand flex a-center j-center font-bold text-orange-400">
-            <span className="logo-text">CINI MOVIES</span>
+          <h1 className="brand flex a-center j-center font-bold text-yellow-400">
+            <span className="logo-text text-lg">CINI PHILES</span>
           </h1>
           <ul className="links flex">
             <li className="home">
@@ -64,7 +65,7 @@ export default function Navbar({ isScrolled }) {
             </button>
             <input type="text" placeholder="Search" onChange={handleSearch} />
           </div>
-          <div onClick={handleLogout} className="hover:text-red-500 text-md">
+          <div onClick={handleLogout} className="hover:text-red-500 text-md cursor-pointer">
             Logout
           </div>
         </div>

@@ -25,10 +25,10 @@ export default function Hero() {
     <div className="flex flex-col min-h-[100dvh] bg-gradient-to-br from-[#1a1a1a] to-[#2c2c2c] text-white">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b border-[#3b3b3b]">
         <div
-          className="flex items-center justify-center text-size font-bold text-orange-300"
+          className="flex items-center justify-center text-lg font-bold text-yellow-400"
           onClick={()=>navigate("/")}
         >
-          CINI MOVIES
+          CINI PHILES
         </div>
         <nav className="ml-auto flex gap-4 sm:gap-6 md:gap-8 lg:gap-10">
           <span
@@ -205,7 +205,7 @@ export default function Hero() {
               </p>
             </div>
             <img
-              alt="CINI Prime Kids"
+              alt="PHILE Kids"
               className="rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer"
               src="https://media.gettyimages.com/id/1716777307/photo/little-boy-watching-cartoons-at-home.jpg?s=612x612&w=gi&k=20&c=v93Hksawugs1wCdq9ypYJUPzoFrS3iad3llHnGC805c="
               style={{
@@ -219,7 +219,7 @@ export default function Hero() {
           <div className="container grid grid-cols-1 md:grid-cols-2 gap-8 px-4 md:px-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="bg-[#37475A] rounded-lg p-6 space-y-2 hover:bg-[#4a5b70] transition-colors cursor-pointer">
-                <h3 className="text-xl font-bold">CINI Video</h3>
+                <h3 className="text-xl font-bold">PHILE Video</h3>
                 <p className="text-4xl font-bold">₹99</p>
                 <p className="text-gray-400">per month</p>
                 <ul className="space-y-2 text-gray-400">
@@ -244,13 +244,13 @@ export default function Hero() {
                 </button>
               </div>
               <div className="bg-[#37475A] rounded-lg p-6 space-y-2 hover:bg-[#4a5b70] transition-colors cursor-pointer">
-                <h3 className="text-xl font-bold">CINI Prime</h3>
+                <h3 className="text-xl font-bold">PHILE Prime</h3>
                 <p className="text-4xl font-bold">₹149</p>
                 <p className="text-gray-400">per month</p>
                 <ul className="space-y-2 text-gray-400">
                   <li>
                     <CheckIcon className="mr-2 inline-block h-4 w-4 text-[#ff9900]" />
-                    CINI Video
+                    PHILE Video
                   </li>
                   <li>
                     <CheckIcon className="mr-2 inline-block h-4 w-4 text-[#ff9900]" />
@@ -282,7 +282,7 @@ export default function Hero() {
                 Choose One Plan and Enjoy Everything.
               </h2>
               <p className="text-lg text-gray-400">
-                CINI Prime offers a wide selection of movies, TV shows, and
+                CINI PHILE offers a wide selection of movies, TV shows, and
                 more. Stream on any device, anytime.
               </p>
             </div>
@@ -292,7 +292,7 @@ export default function Hero() {
       <footer className="bg-gradient-to-br from-[#1a1a1a] to-[#2c2c2c] py-6 px-4 md:px-6 border-t border-[#3b3b3b]">
         <div className="container flex flex-col gap-4 sm:flex-row sm:justify-between">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm text-orange-300 font-bold">CINI Prime</h3>
+            <h3 className="text-sm text-orange-300 font-bold">PHILE Prime</h3>
           </div>
           <nav className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-10">
             <Link
