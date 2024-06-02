@@ -14,31 +14,6 @@ const Select = styled.select`
   font-size: 1.4rem;
   background-color: rgba(0, 0, 0, 0.4);
   color: white;
-  border: 1px solid white;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  outline: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  &:focus {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: black;
-  }
-
-  option {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 0.5rem;
-  }
-
-  & option:checked {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-  }
 `;
 
 const SelectGenre = ({ genres, type }) => {
@@ -117,11 +92,7 @@ const AllMovies = () => {
       </div>
       <div className="data">
         <SelectGenre genres={genres} type="movie" />
-        {movies && movies.length > 0 ? (
-          <Slider movies={movies} />
-        ) : (
-          <NotAvailable />
-        )}
+        {movies.length ? <Slider movies={movies} /> : <NotAvailable />}
       </div>
     </Container>
   );
