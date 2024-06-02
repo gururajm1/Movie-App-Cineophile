@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+require('dotenv').config();
 
 const userRoutes = require("./routes/UserRoutes");
 
@@ -9,10 +10,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const dbURI =
-  "mongodb+srv://guruguru6631:mangopp@cluster0.nrzhyni.mongodb.net/Movie-app";
 mongoose
-  .connect(dbURI, {
+  .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
