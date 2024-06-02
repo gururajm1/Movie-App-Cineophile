@@ -26,5 +26,11 @@ After setting up the client and API, you can run the project by following these 
 2. Start the client application by running `npm start` in the `client` directory.
 
 
-      ![cilenophileroot](https://github.com/gururajm1/Movie-App-Cineophile/assets/107309944/0795d471-ce30-4176-b8c4-42adb7cb1430)
+![Screenshot (582)](https://github.com/gururajm1/Movie-App-Cineophile/assets/107309944/bf6b68ed-8c84-4982-8d84-f7af4b0f57fd)
+
+
+
+![Screenshot (583)](https://github.com/gururajm1/Movie-App-Cineophile/assets/107309944/a140b96d-4a7c-47e6-93ee-ee8dec7cafff)
+
+
 
