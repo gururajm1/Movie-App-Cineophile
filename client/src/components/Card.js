@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { IoPlayCircleSharp } from "react-icons/io5";
+import { IoPlayCircleOutline, IoPlayCircleSharp } from "react-icons/io5";
 import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
-import { RiThumbUpFill, RiThumbDownFill } from "react-icons/ri";
-import { BiCheck } from "react-icons/bi";
+import {
+  RiThumbUpLine,
+  RiThumbUpFill,
+  RiThumbDownLine,
+  RiThumbDownFill,
+} from "react-icons/ri";
+import { BiCheck, BiCheckCircle } from "react-icons/bi";
 import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../dependencies/firebaseConfig";
@@ -21,6 +26,9 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
   const [email, setEmail] = useState(undefined);
   const [showDeleteIcon, setShowDeleteIcon] = useState(false);
   const [liked, setLiked] = useState(isLiked);
+  const [likedIcon, setLikedIcon] = useState(false);
+  const [dislikedIcon, setDislikedIcon] = useState(false);
+  const [playIcon, setPlayIcon] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (currentUser) => {
@@ -73,6 +81,13 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
     }
   };
 
+  const handlePlayClick = () => {
+    setPlayIcon(true);
+    setTimeout(() => {
+      navigate("/player");
+    }, 300); // Delay to allow icon change to be reflected
+  };
+
   return (
     <Container
       onMouseEnter={() => setIsHovered(true)}
@@ -81,7 +96,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
       <img
         src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
         alt="card"
-        onClick={() => navigate("/player")}
+        onClick={handlePlayClick}
       />
 
       {isHovered && (
@@ -90,28 +105,49 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
             <img
               src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
               alt="card"
-              onClick={() => navigate("/player")}
+              onClick={handlePlayClick}
             />
             <video
               src={video}
               autoPlay={true}
               loop
               muted
-              onClick={() => navigate("/player")}
+              onClick={handlePlayClick}
             />
           </div>
           <div className="info-container flex column">
-            <h3 className="name" onClick={() => navigate("/player")}>
+            <h3 className="name" onClick={handlePlayClick}>
               {movieData.name}
             </h3>
             <div className="icons flex j-between">
               <div className="controls flex">
-                <IoPlayCircleSharp
-                  title="Play"
-                  onClick={() => navigate("/player")}
-                />
-                <RiThumbUpFill title="Like" />
-                <RiThumbDownFill title="Dislike" />
+                {playIcon ? (
+                  <IoPlayCircleSharp title="Play" onClick={handlePlayClick} />
+                ) : (
+                  <IoPlayCircleOutline title="Play" onClick={handlePlayClick} />
+                )}
+                {likedIcon ? (
+                  <RiThumbUpFill
+                    title="Like"
+                    onClick={() => setLikedIcon(false)}
+                  />
+                ) : (
+                  <RiThumbUpLine
+                    title="Like"
+                    onClick={() => setLikedIcon(true)}
+                  />
+                )}
+                {dislikedIcon ? (
+                  <RiThumbDownFill
+                    title="Dislike"
+                    onClick={() => setDislikedIcon(false)}
+                  />
+                ) : (
+                  <RiThumbDownLine
+                    title="Dislike"
+                    onClick={() => setDislikedIcon(true)}
+                  />
+                )}
                 {liked ? (
                   showDeleteIcon ? (
                     <AiOutlineDelete
@@ -120,7 +156,10 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                       style={{ color: "red" }}
                     />
                   ) : (
-                    <BiCheck title="Added to List" style={{ color: "green" }} />
+                    <BiCheckCircle
+                      title="Added to List"
+                      style={{ color: "green" }}
+                    />
                   )
                 ) : (
                   location.pathname !== "/myplaylist" && (
@@ -157,7 +196,7 @@ const Container = styled.div`
   position: relative;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: all 0.8s ease-in-out;
 
   img {
     border-radius: 10px;
@@ -165,7 +204,7 @@ const Container = styled.div`
     height: 100%;
     z-index: 10;
     box-shadow: 0 0 10px 1px #0a0a0a;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.8s ease-in-out;
   }
 
   .hover {
@@ -178,7 +217,7 @@ const Container = styled.div`
     border-radius: 1rem;
     box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
     background-color: #181818;
-    transition: all 0.3s ease;
+    transition: all 0.8s ease-in-out;
 
     .image-video-container {
       position: relative;
@@ -195,6 +234,7 @@ const Container = styled.div`
         position: absolute;
         border-radius: 10px;
         box-shadow: 0 0 10px 1px #0a0a0a;
+        transition: all 0.8s ease-in-out;
       }
     }
 
@@ -211,7 +251,7 @@ const Container = styled.div`
       svg {
         font-size: 2rem;
         cursor: pointer;
-        transition: color 0.3s ease;
+        transition: color 0.8s ease-in-out;
         &:hover {
           color: #b8b8b8;
         }

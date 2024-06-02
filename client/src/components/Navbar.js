@@ -1,6 +1,6 @@
 import { signOut } from "firebase/auth";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { firebaseAuth } from "../dependencies/firebaseConfig";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
@@ -24,6 +24,14 @@ export default function Navbar({ isScrolled }) {
 
   const handleNavigation = (link) => {
     navigate(link);
+    if (link === "/dash") {
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("cini-auth");
+    signOut(firebaseAuth);
   };
 
   return (
@@ -31,10 +39,10 @@ export default function Navbar({ isScrolled }) {
       <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
         <div className="left flex a-center">
           <h1 className="brand flex a-center j-center font-bold text-orange-400">
-            CINI MOVIES
+            <span className="logo-text">CINI MOVIES</span>
           </h1>
           <ul className="links flex">
-            <li>
+            <li className="home">
               <button onClick={() => handleNavigation("/dash")}>Home</button>
             </li>
             <li>
@@ -44,7 +52,7 @@ export default function Navbar({ isScrolled }) {
             </li>
             <li>
               <button onClick={() => handleNavigation("/myplaylist")}>
-                My-Playist
+                My-Playlist
               </button>
             </li>
           </ul>
@@ -56,12 +64,9 @@ export default function Navbar({ isScrolled }) {
             </button>
             <input type="text" placeholder="Search" onChange={handleSearch} />
           </div>
-          <button
-            onClick={() => signOut(firebaseAuth)}
-            className="text-red-500 font-semibold text-lg underline decoration-gray-500"
-          >
+          <div onClick={handleLogout} className="hover:text-red-500 text-md">
             Logout
-          </button>
+          </div>
         </div>
       </nav>
     </Container>
@@ -72,6 +77,7 @@ const Container = styled.div`
   .scrolled {
     background-color: black;
   }
+
   nav {
     position: sticky;
     top: 0;
@@ -84,16 +90,53 @@ const Container = styled.div`
     padding: 0 4rem;
     align-items: center;
     transition: 0.3s ease-in-out;
+
+    @media (max-width: 768px) {
+      padding: 0 2rem;
+      height: 5rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 0 1rem;
+      height: auto;
+    }
+
     .left {
       gap: 2rem;
+      flex: 1;
+
       .brand {
+        .logo-text {
+          display: block;
+
+          @media (max-width: 480px) {
+            display: none;
+          }
+        }
+
         img {
           height: 4rem;
+
+          @media (max-width: 768px) {
+            height: 3rem;
+          }
+
+          @media (max-width: 480px) {
+            height: 2.5rem;
+          }
         }
       }
+
       .links {
         list-style-type: none;
         gap: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+
+        @media (max-width: 480px) {
+          justify-content: center;
+        }
+
         li {
           button {
             background: transparent;
@@ -101,15 +144,44 @@ const Container = styled.div`
             cursor: pointer;
             color: white;
             font-size: 1rem;
+
             &:hover {
               text-decoration: underline;
+            }
+
+            @media (max-width: 768px) {
+              font-size: 0.9rem;
+            }
+
+            @media (max-width: 480px) {
+              font-size: 0.8rem;
+            }
+          }
+
+          &.home {
+            @media (max-width: 768px) {
+              display: none;
             }
           }
         }
       }
     }
+
     .right {
       gap: 1rem;
+      flex: 1;
+      justify-content: flex-end;
+
+      @media (max-width: 768px) {
+        gap: 0.5rem;
+      }
+
+      @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
       button {
         background-color: transparent;
         border: none;
@@ -120,6 +192,14 @@ const Container = styled.div`
         svg {
           color: #f34242;
           font-size: 1.2rem;
+
+          @media (max-width: 768px) {
+            font-size: 1rem;
+          }
+
+          @media (max-width: 480px) {
+            font-size: 0.9rem;
+          }
         }
       }
     }
@@ -131,8 +211,22 @@ const Container = styled.div`
     align-items: center;
     padding: 0.2rem;
     padding-left: 0.5rem;
-    background-color: black; /* Set background color */
-    border: 1px solid white; /* Set border color */
+    background-color: black;
+    border: 1px solid white;
+
+    @media (max-width: 768px) {
+      gap: 0.2rem;
+      padding: 0.1rem;
+      padding-left: 0.3rem;
+    }
+
+    @media (max-width: 480px) {
+      width: 50%;
+      margin-top: 1rem;
+      padding: 0.1rem;
+      padding-left: 0.2rem;
+    }
+
     button {
       background-color: transparent;
       border: none;
@@ -151,6 +245,27 @@ const Container = styled.div`
       &:focus {
         outline: none;
       }
+    }
+  }
+`;
+
+const LogoutButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  svg {
+    color: #f34242;
+    font-size: 1.2rem;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
     }
   }
 `;

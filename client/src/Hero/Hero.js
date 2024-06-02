@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import mobileSmal from '../assets/mobileSmal.png'
-import ipad from '../assets/ipad.png'
-import laptop from '../assets/laptop.png'
-import tv from '../assets/tv.png'
+import mobileSmal from "../assets/mobileSmal.png";
+import ipad from "../assets/ipad.png";
+import laptop from "../assets/laptop.png";
+import tv from "../assets/tv.png";
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -17,19 +17,19 @@ export default function Hero() {
   const v7 = "Login";
 
   useEffect(() => {
-    if(localStorage.getItem("cini-auth")){
+    if (localStorage.getItem("cini-auth")) {
       navigate("/dash");
     }
-  }, [])
+  }, []);
   return (
     <div className="flex flex-col min-h-[100dvh] bg-gradient-to-br from-[#1a1a1a] to-[#2c2c2c] text-white">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b border-[#3b3b3b]">
-        <Link
+        <div
           className="flex items-center justify-center text-size font-bold text-orange-300"
-          href="#"
+          onClick={()=>navigate("/")}
         >
           CINI MOVIES
-        </Link>
+        </div>
         <nav className="ml-auto flex gap-4 sm:gap-6 md:gap-8 lg:gap-10">
           <span
             className="text-sm font-medium hover:underline underline-offset-4 hover:text-[#ff9900] hidden md:block cursor-pointer"
@@ -89,7 +89,10 @@ export default function Hero() {
               Watch anywhere. Cancel anytime.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <button className="px-8 py-3 rounded-md bg-[#ff9900] text-black hover:bg-[#e68a00] focus:ring-2 focus:ring-[#ff9900] focus:outline-none">
+              <button
+                className="px-8 py-3 rounded-md bg-[#ff9900] text-black hover:bg-[#e68a00] focus:ring-2 focus:ring-[#ff9900] focus:outline-none"
+                onClick={() => navigate("/signup")}
+              >
                 Get Started
               </button>
             </div>
@@ -100,9 +103,15 @@ export default function Hero() {
               backgroundSize: "120%",
               backgroundImage:
                 "url('https://assets.nflxext.com/ffe/siteui/vlv3/dd4dfce3-1a39-4b1a-8e19-b7242da17e68/86742114-c001-4800-a127-c9c89ca7bbe4/IN-en-20240527-popsignuptwoweeks-perspective_alpha_website_medium.jpg')",
+              display: "block",
               height: "682px",
-              display: "block", // Default to block display
-              ...(window.innerWidth <= 76 && { display: "none" }), // Hide for smaller devices
+              "@media (max-width: 480px)": {
+                display: "none",
+              },
+              "@media (max-width: 768px)": {
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              },
             }}
           ></div>
         </section>
@@ -227,7 +236,10 @@ export default function Hero() {
                 <br />
                 <br />
                 <br />
-                <button className="lg:mt-5 w-full bg-[#ff9900] text-black hover:bg-[#e68a00] focus:ring-2 focus:ring-[#ff9900] focus:outline-none rounded-xl">
+                <button
+                  className="lg:mt-5 w-full bg-[#ff9900] text-black hover:bg-[#e68a00] focus:ring-2 focus:ring-[#ff9900] focus:outline-none rounded-xl"
+                  onClick={() => navigate("/signup")}
+                >
                   Subscribe
                 </button>
               </div>
@@ -257,7 +269,10 @@ export default function Hero() {
                     Prime Gaming
                   </li>
                 </ul>
-                <button className="w-full bg-[#ff9900] text-black hover:bg-[#e68a00] focus:ring-2 focus:ring-[#ff9900] focus:outline-none rounded-xl">
+                <button
+                  className="w-full bg-[#ff9900] text-black hover:bg-[#e68a00] focus:ring-2 focus:ring-[#ff9900] focus:outline-none rounded-xl"
+                  onClick={() => navigate("/signup")}
+                >
                   Subscribe
                 </button>
               </div>
@@ -327,9 +342,8 @@ function CheckIcon(props) {
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>
-  )
+  );
 }
-
 
 function PackagePlusIcon(props) {
   return (
@@ -352,5 +366,5 @@ function PackagePlusIcon(props) {
       <polyline points="3.29 7 12 12 20.71 7" />
       <line x1="12" x2="12" y1="22" y2="12" />
     </svg>
-  )
+  );
 }

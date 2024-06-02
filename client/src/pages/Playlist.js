@@ -9,7 +9,7 @@ import Navbar from "../components/Navbar";
 import { getUsersLikedMovies } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function UserListedMovies() {
+export default function Playlist() {
   const movies = useSelector((state) => state.netflix.movies);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,9 +42,9 @@ export default function UserListedMovies() {
     <Container>
       <Navbar isScrolled={isScrolled} />
       <div className="content flex column">
-        <h1>My List</h1>
+        {movies && movies.length > 0 ? <h1>My Playlist</h1> : ""}
         <div className="grid flex">
-          {movies.length > 0 ? (
+          {movies && movies.length > 0 ? (
             movies.map((movie, index) => (
               <Card
                 movieData={movie}
@@ -54,7 +54,9 @@ export default function UserListedMovies() {
               />
             ))
           ) : (
-            <p className="empty-list-message">Your playlist is empty.</p>
+            <h2 className="text-red-500 text-xl bold flex ml-[650px]">
+              Your Playlist is Empty
+            </h2>
           )}
         </div>
       </div>
