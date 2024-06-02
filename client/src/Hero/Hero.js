@@ -28,7 +28,7 @@ export default function Hero() {
           className="flex items-center justify-center text-lg font-bold text-yellow-400"
           onClick={()=>navigate("/")}
         >
-          CINI PHILES
+          CINEO PHILE
         </div>
         <nav className="ml-auto flex gap-4 sm:gap-6 md:gap-8 lg:gap-10">
           <span
@@ -282,7 +282,7 @@ export default function Hero() {
                 Choose One Plan and Enjoy Everything.
               </h2>
               <p className="text-lg text-gray-400">
-                CINI PHILE offers a wide selection of movies, TV shows, and
+                CINEO PHILE offers a wide selection of movies, TV shows, and
                 more. Stream on any device, anytime.
               </p>
             </div>
@@ -292,7 +292,7 @@ export default function Hero() {
       <footer className="bg-gradient-to-br from-[#1a1a1a] to-[#2c2c2c] py-6 px-4 md:px-6 border-t border-[#3b3b3b]">
         <div className="container flex flex-col gap-4 sm:flex-row sm:justify-between">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm text-orange-300 font-bold">PHILE Prime</h3>
+            <h3 className="text-sm text-orange-300 font-bold">CINEO PHILE</h3>
           </div>
           <nav className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-10">
             <Link

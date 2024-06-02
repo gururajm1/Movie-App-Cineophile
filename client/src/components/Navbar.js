@@ -40,7 +40,7 @@ export default function Navbar({ isScrolled }) {
       <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
         <div className="left flex a-center">
           <h1 className="brand flex a-center j-center font-bold text-yellow-400">
-            <span className="logo-text text-lg">CINI PHILES</span>
+            <span className="logo-text text-lg">CINEO PHILE</span>
           </h1>
           <ul className="links flex">
             <li className="home">
