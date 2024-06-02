@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import PasswordChecklist from "react-password-checklist";
 import pakka from "../assets/pakka.jpg";
@@ -33,36 +36,36 @@ function Signup() {
     const name = userName.current.value;
     const age = userAge.current.value;
     const password = passwordInputRef;
-    try{
+    try {
       await createUserWithEmailAndPassword(firebaseAuth, email, password);
       if (!localStorage.getItem("cini-auth", "true")) {
         localStorage.setItem("cini-auth", "true");
       }
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
   };
 
   onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if(currentUser) navigate("/dash");
-  })
+    if (currentUser) navigate("/dash");
+  });
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-gray-100">
       <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="relative md:h-[550px]">
+        <div className="relative md:h-[550px] hidden md:block">
           <img
             className="object-cover w-full h-full"
             src={pakka}
             alt="Signup background"
           />
         </div>
-        <div className="p-6 md:p-7 md:pt-5 flex flex-col justify-center">
-          <form onSubmit={signUpForm}>
+        <div className="p-6 md:p-7 md:pt-5 flex flex-col justify-center items-center md:items-start">
+          <form onSubmit={signUpForm} className="w-full">
             <h2 className="text-4xl font-bold text-center mb-9 text-gray-600">
               Signup
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-4 w-full md:w-auto">
               <input
                 className="border p-2 w-full text-black"
                 type="text"
