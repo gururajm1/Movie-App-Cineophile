@@ -1,5 +1,9 @@
 # CINEOPHILE SETUP
 
+
+https://github.com/gururajm1/Movie-App-Cineophile/assets/107309944/48f880c0-2fda-463d-ab24-458df47693f6
+
+
 ## Overview
 
 This project consists of a client-side application and an API. Follow the steps below to set up and run the project.
