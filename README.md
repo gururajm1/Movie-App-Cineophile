@@ -16,6 +16,7 @@ This project consists of a client-side application and an API. Follow the steps 
 ## API Setup
 
 1. Navigate to the `api` directory.
+2. Create a .env file on the root of api directory and add (MONGO_URL="<Your_Mongo_Atlas(or)Compass_url>")
 2. Run `npm install` to install the same dependencies used in the client.
 
 ## Running the Project
