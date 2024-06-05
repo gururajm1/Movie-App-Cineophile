@@ -47,11 +47,6 @@ export default function Navbar({ isScrolled }) {
               <button onClick={() => handleNavigation("/dash")}>Home</button>
             </li>
             <li>
-              <button onClick={() => handleNavigation("/allmovies")}>
-                All-Movies
-              </button>
-            </li>
-            <li>
               <button onClick={() => handleNavigation("/myplaylist")}>
                 My-Playlist
               </button>
