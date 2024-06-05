@@ -15,7 +15,7 @@ export default function Playlist() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [email, setEmail] = useState(undefined);
   const [shareLink, setShareLink] = useState("");
-  const [isCopied, setIsCopied] = useState(false); // State to track if link is copied
+  const [isCopied, setIsCopied] = useState(false); 
 
   useEffect(() => {
     if (!localStorage.getItem("cini-auth")) {
