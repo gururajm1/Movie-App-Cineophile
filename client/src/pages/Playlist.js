@@ -69,7 +69,7 @@ export default function Playlist() {
           <>
             <button
               onClick={handleShare}
-              className="w-7 p-2 px-10 bg-slate-50 text-black flex justify-center rounded-xl"
+              className="w-7 px-10 bg-slate-50 text-black flex justify-center rounded-2xl"
             >
               Share Public
             </button>

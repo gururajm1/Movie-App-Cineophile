@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
+import logo from "../assets/cinilogo.jpg";
 
 export default function SharedPlaylist() {
   const { email } = useParams();
@@ -13,7 +15,9 @@ export default function SharedPlaylist() {
   useEffect(() => {
     const fetchSharedMovies = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/user/liked/${email}`);
+        const { data } = await axios.get(
+          `http://localhost:5000/api/user/liked/${email}`
+        );
         if (data.movies) {
           setMovies(data.movies);
         }
@@ -31,15 +35,28 @@ export default function SharedPlaylist() {
     };
   }, []);
 
+  
+  const getEmailName = (email) => {
+    return email.replace(/@gmail.com|\d/g, "");
+  };
+
   return (
     <Container>
+      <Helmet>
+        <title>{`${getEmailName(email)}'s Playlist - CINEO PHILE`}</title>
+        <link rel="icon" type="image/png" href={logo} sizes="16x16" />
+      </Helmet>
       <div className="left flex a-center">
         <h1 className="brand flex a-center j-center font-bold text-yellow-400">
           <span className="logo-text text-lg mt-9 ml-10">CINEO PHILE</span>
         </h1>
       </div>
       <div className="content flex column">
-        {movies && movies.length > 0 ? <h1>{`${email}'s Playlist`}</h1> : ""}
+        {movies && movies.length > 0 ? (
+          <h1>{`${getEmailName(email)}'s Playlist`}</h1>
+        ) : (
+          ""
+        )}
         <div className="grid flex">
           {movies && movies.length > 0 ? (
             movies.map((movie, index) => (
