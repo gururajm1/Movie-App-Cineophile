@@ -1,6 +1,5 @@
-import axios from "axios";
-import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../dependencies/firebaseConfig";
 import Card from "../components/Card";
@@ -15,27 +14,50 @@ export default function Playlist() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [email, setEmail] = useState(undefined);
+  const [shareLink, setShareLink] = useState("");
+  const [isCopied, setIsCopied] = useState(false); // State to track if link is copied
 
   useEffect(() => {
     if (!localStorage.getItem("cini-auth")) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (currentUser) setEmail(currentUser.email);
-    else navigate("/login");
-  });
+  useEffect(() => {
+    onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (currentUser) {
+        setEmail(currentUser.email);
+      } else {
+        navigate("/login");
+      }
+    });
+  }, [navigate]);
 
   useEffect(() => {
     if (email) {
       dispatch(getUsersLikedMovies(email));
     }
-  }, [email]);
+  }, [email, dispatch]);
 
-  window.onscroll = () => {
-    setIsScrolled(window.pageYOffset === 0 ? false : true);
-    return () => (window.onscroll = null);
+  useEffect(() => {
+    window.onscroll = () => {
+      setIsScrolled(window.pageYOffset === 0 ? false : true);
+      return () => (window.onscroll = null);
+    };
+  }, []);
+
+  const handleShare = () => {
+    if (email) {
+      const link = `${window.location.origin}/shared-playlist/${email}`;
+      setShareLink(link);
+      navigator.clipboard
+        .writeText(link) 
+        .then(() => {
+          setIsCopied(true); 
+          setTimeout(() => setIsCopied(false), 1400); 
+        })
+        .catch((error) => console.error("Could not copy text: ", error));
+    }
   };
 
   return (
@@ -43,6 +65,23 @@ export default function Playlist() {
       <Navbar isScrolled={isScrolled} />
       <div className="content flex column">
         {movies && movies.length > 0 ? <h1>My Playlist</h1> : ""}
+        {movies && movies.length > 0 ? (
+          <>
+            <button
+              onClick={handleShare}
+              className="w-7 p-2 px-10 bg-slate-50 text-black flex justify-center rounded-xl"
+            >
+              Share Public
+            </button>
+            {isCopied && (
+              <p className="text-green-500 flex justify-center font-bold">
+                Link copied to clipboard!
+              </p>
+            )}
+          </>
+        ) : (
+          ""
+        )}
         <div className="grid flex">
           {movies && movies.length > 0 ? (
             movies.map((movie, index) => (
@@ -75,6 +114,16 @@ const Container = styled.div`
     .grid {
       flex-wrap: wrap;
       gap: 1rem;
+    }
+    .share-link {
+      margin-top: 1rem;
+      p {
+        margin: 0;
+      }
+      a {
+        color: blue;
+        text-decoration: underline;
+      }
     }
   }
 

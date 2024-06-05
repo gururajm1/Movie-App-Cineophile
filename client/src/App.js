@@ -7,6 +7,7 @@ import Hero from './Hero/Hero'
 import Login from "./Auth/Login";
 import Signup from "./Auth/Signup";
 import Playlist from "./pages/Playlist";
+import SharedPlaylist from "./pages/sharedPlaylist";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route exact path="/allmovies" element={<AllMovies />} />
         <Route exact path="/" element={<Hero />} />
         <Route exact path="/myplaylist" element={<Playlist />} />
+        <Route path="/shared-playlist/:email" element={<SharedPlaylist />} />
         <Route exact path="/dash" element={<Landing />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
