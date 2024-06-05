@@ -3,47 +3,56 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
-import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import logo from "../assets/cinilogo.jpg";
 
 export default function SharedPlaylist() {
-  const { email } = useParams();
+  const [email, setEmail] = useState("");
+  const { uuid } = useParams();
   const [movies, setMovies] = useState([]);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [privateMessage, setPrivateMessage] = useState("");
+
+  // Define getEmailName function outside of useEffect
+  const getEmailName = (email) => {
+    const parts = email.split("@");
+    return parts[0];
+  };
 
   useEffect(() => {
     const fetchSharedMovies = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/user/liked/${email}`
+          `http://localhost:5000/api/user/public/liked/${uuid}`
         );
-        if (data.movies) {
+        if (data.msg === "Playlist is Private") {
+          setPrivateMessage("This playlist is private.");
+        } else if (data.email && data.movies) {
+          setEmail(data.email);
           setMovies(data.movies);
         }
       } catch (error) {
         console.error("Error fetching shared movies:", error);
       }
     };
+
     fetchSharedMovies();
-  }, [email]);
 
-  useEffect(() => {
-    window.onscroll = () => {
+    const handleScroll = () => {
       setIsScrolled(window.pageYOffset === 0 ? false : true);
-      return () => (window.onscroll = null);
     };
-  }, []);
 
-  
-  const getEmailName = (email) => {
-    return email.replace(/@gmail.com|\d/g, "");
-  };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [uuid]);
 
   return (
     <Container>
       <Helmet>
-        <title>{`${getEmailName(email)}'s Playlist - CINEO PHILE`}</title>
+        <title>{`${uuid}'s Playlist - CINEO PHILE`}</title>
         <link rel="icon" type="image/png" href={logo} sizes="16x16" />
       </Helmet>
       <div className="left flex a-center">
@@ -52,7 +61,9 @@ export default function SharedPlaylist() {
         </h1>
       </div>
       <div className="content flex column">
-        {movies && movies.length > 0 ? (
+        {privateMessage ? (
+          ""
+        ) : email !== "" ? (
           <h1>{`${getEmailName(email)}'s Playlist`}</h1>
         ) : (
           ""
@@ -69,7 +80,7 @@ export default function SharedPlaylist() {
             ))
           ) : (
             <h2 className="text-red-500 text-xl bold flex ml-[650px]">
-              The Playlist is Empty
+              {privateMessage}
             </h2>
           )}
         </div>

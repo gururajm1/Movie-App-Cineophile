@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { getUsersLikedMovies } from "../store";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 export default function Playlist() {
   const movies = useSelector((state) => state.netflix.movies);
@@ -15,7 +16,8 @@ export default function Playlist() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [email, setEmail] = useState(undefined);
   const [shareLink, setShareLink] = useState("");
-  const [isCopied, setIsCopied] = useState(false); 
+  const [isCopied, setIsCopied] = useState(false);
+  const [publicc, setPublicc] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem("cini-auth")) {
@@ -46,17 +48,45 @@ export default function Playlist() {
     };
   }, []);
 
-  const handleShare = () => {
+  const handlePublic = async () => {
     if (email) {
-      const link = `${window.location.origin}/shared-playlist/${email}`;
-      setShareLink(link);
-      navigator.clipboard
-        .writeText(link) 
-        .then(() => {
-          setIsCopied(true); 
-          setTimeout(() => setIsCopied(false), 1400); 
-        })
-        .catch((error) => console.error("Could not copy text: ", error));
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/user/make-public",
+          { email }
+        );
+        if (response.data.user) {
+          setPublicc(true);
+          const link = `${window.location.origin}/shared-playlist/${response.data.user.uuid}`;
+          setShareLink(link);
+          navigator.clipboard
+            .writeText(link)
+            .then(() => {
+              setIsCopied(true);
+              setTimeout(() => setIsCopied(false), 1400);
+            })
+            .catch((error) => console.error("Could not copy text: ", error));
+        }
+      } catch (error) {
+        console.error("Error making playlist public: ", error);
+      }
+    }
+  };
+
+  const handlePrivate = async () => {
+    if (email) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/user/make-private",
+          { email }
+        );
+        if (response.data.user) {
+          setPublicc(false);
+          setShareLink("");
+        }
+      } catch (error) {
+        console.error("Error making playlist private: ", error);
+      }
     }
   };
 
@@ -67,12 +97,21 @@ export default function Playlist() {
         {movies && movies.length > 0 ? <h1>My Playlist</h1> : ""}
         {movies && movies.length > 0 ? (
           <>
-            <button
-              onClick={handleShare}
-              className="w-7 px-10 bg-slate-50 text-black flex justify-center rounded-2xl"
-            >
-              Share Public
-            </button>
+            {publicc ? (
+              <button
+                onClick={handlePrivate}
+                className="mx-[620px] px-12 bg-slate-50 text-black flex justify-center rounded-2xl font-bold"
+              >
+                Make it Private
+              </button>
+            ) : (
+              <button
+                onClick={handlePublic}
+                className="mx-[620px] px-12 bg-slate-50 text-black flex justify-center rounded-2xl font-bold"
+              >
+                Share Public
+              </button>
+            )}
             {isCopied && (
               <p className="text-green-500 flex justify-center font-bold">
                 Link copied to clipboard!
