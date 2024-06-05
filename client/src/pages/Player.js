@@ -1,17 +1,22 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { BsArrowLeft } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import video from '../assets/trailer.mp4';
 
 export default function Player() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if(!localStorage.getItem("cini-auth")){
+    if(!location.pathname.includes("/share-playlist/")){
+      return;
+    }if (!localStorage.getItem("cini-auth")) {
       navigate("/");
+    } else if (localStorage.getItem("cini-auth")) {
+      navigate("/dash");
     }
-  }, []);
+  }, [location, navigate]);
 
   return (
     <Container>

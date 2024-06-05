@@ -13,7 +13,6 @@ export default function SharedPlaylist() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [privateMessage, setPrivateMessage] = useState("");
 
-  // Define getEmailName function outside of useEffect
   const getEmailName = (email) => {
     const parts = email.split("@");
     return parts[0];

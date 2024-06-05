@@ -34,7 +34,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
     onAuthStateChanged(firebaseAuth, (currentUser) => {
       if (currentUser) {
         setEmail(currentUser.email);
-      } else navigate("/login");
+      } 
     });
   }, []);
 
@@ -85,7 +85,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
     setPlayIcon(true);
     setTimeout(() => {
       navigate("/player");
-    }, 300); // Delay to allow icon change to be reflected
+    }, 300); 
   };
 
   return (

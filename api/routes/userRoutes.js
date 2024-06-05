@@ -16,8 +16,6 @@ router.put("/remove", removeFromLikedMovies);
 router.get("/public/liked/:uuid", publicGetLikedMovies);
 module.exports = router;
 
-
-// Update public status to true
 router.post("/make-public", async (req, res) => {
   try {
     const { email } = req.body;
@@ -36,7 +34,7 @@ router.post("/make-public", async (req, res) => {
   }
 });
 
-// Update public status to false
+
 router.post("/make-private", async (req, res) => {
   try {
     const { email } = req.body;
