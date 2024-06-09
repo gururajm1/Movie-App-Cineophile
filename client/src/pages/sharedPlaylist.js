@@ -7,13 +7,13 @@ import Card from "../components/Card";
 import logo from "../assets/cinilogo.jpg";
 
 export default function SharedPlaylist() {
-  const [email, setEmail] = useState("");
   const { uuid } = useParams();
+  const [email, setEmail] = useState("");
   const [movies, setMovies] = useState([]);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [privateMessage, setPrivateMessage] = useState("");
 
   const getEmailName = (email) => {
+    if (!email) return "";
     const parts = email.split("@");
     return parts[0];
   };
@@ -24,34 +24,28 @@ export default function SharedPlaylist() {
         const { data } = await axios.get(
           `http://localhost:5000/api/user/public/liked/${uuid}`
         );
+
         if (data.msg === "Playlist is Private") {
           setPrivateMessage("This playlist is private.");
         } else if (data.email && data.movies) {
           setEmail(data.email);
           setMovies(data.movies);
+        } else {
+          setPrivateMessage("Playlist not found or user not found.");
         }
       } catch (error) {
         console.error("Error fetching shared movies:", error);
+        setPrivateMessage("Error fetching playlist.");
       }
     };
 
     fetchSharedMovies();
-
-    const handleScroll = () => {
-      setIsScrolled(window.pageYOffset === 0 ? false : true);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
   }, [uuid]);
 
   return (
     <Container>
       <Helmet>
-        <title>{`${uuid}'s Playlist - CINEO PHILE`}</title>
+        <title>{`${getEmailName(email)}'s Playlist - CINEO PHILE`}</title>
         <link rel="icon" type="image/png" href={logo} sizes="16x16" />
       </Helmet>
       <div className="left flex a-center">
@@ -61,27 +55,27 @@ export default function SharedPlaylist() {
       </div>
       <div className="content flex column">
         {privateMessage ? (
-          ""
-        ) : email !== "" ? (
+          <h2 className="text-red-500 text-xl bold flex ml-[650px]">
+            {privateMessage}
+          </h2>
+        ) : email ? (
           <h1>{`${getEmailName(email)}'s Playlist`}</h1>
-        ) : (
-          ""
-        )}
+        ) : null}
         <div className="grid flex">
-          {movies && movies.length > 0 ? (
-            movies.map((movie, index) => (
-              <Card
-                movieData={movie}
-                index={index}
-                key={movie.id}
-                isLiked={true}
-              />
-            ))
-          ) : (
-            <h2 className="text-red-500 text-xl bold flex ml-[650px]">
-              {privateMessage}
-            </h2>
-          )}
+          {movies && movies.length > 0
+            ? movies.map((movie, index) => (
+                <Card
+                  movieData={movie}
+                  index={index}
+                  key={movie.id}
+                  isLiked={true}
+                />
+              ))
+            : !privateMessage && (
+                <h2 className="text-red-500 text-xl bold flex ml-[650px]">
+                  Your Playlist is Empty
+                </h2>
+              )}
         </div>
       </div>
     </Container>

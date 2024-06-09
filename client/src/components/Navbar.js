@@ -1,6 +1,6 @@
 import { signOut } from "firebase/auth";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { firebaseAuth } from "../dependencies/firebaseConfig";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
@@ -10,6 +10,7 @@ import { searchMovies, fetchMovies } from "../store/index";
 export default function Navbar({ isScrolled }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearch = (e) => {
     const query = e.target.value;
@@ -54,12 +55,14 @@ export default function Navbar({ isScrolled }) {
           </ul>
         </div>
         <div className="right flex a-center">
-          <div className="search">
-            <button>
-              <FaSearch />
-            </button>
-            <input type="text" placeholder="Search" onChange={handleSearch} />
-          </div>
+          {!location.pathname.startsWith("/myplaylist") && (
+            <div className="search">
+              <button>
+                <FaSearch />
+              </button>
+              <input type="text" placeholder="Search" onChange={handleSearch} />
+            </div>
+          )}
           <div onClick={handleLogout} className="hover:text-red-500 text-md cursor-pointer">
             Logout
           </div>

@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../dependencies/firebaseConfig";
-import Card from "../components/Card";
-import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { getUsersLikedMovies } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { Input } from "@mui/material";
 
 export default function Playlist() {
   const movies = useSelector((state) => state.netflix.movies);
@@ -18,11 +17,15 @@ export default function Playlist() {
   const [shareLink, setShareLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const [publicc, setPublicc] = useState(false);
+  const [playlistName, setPlaylistName] = useState("");
+  const [playlists, setPlaylists] = useState([]);
+  const [deleteMessage, setDeleteMessage] = useState("");
 
   useEffect(() => {
     if (!localStorage.getItem("cini-auth")) {
       navigate("/");
     }
+    window.scrollTo(0, 0);
   }, [navigate]);
 
   useEffect(() => {
@@ -38,8 +41,22 @@ export default function Playlist() {
   useEffect(() => {
     if (email) {
       dispatch(getUsersLikedMovies(email));
+      fetchUserPlaylists(email);
     }
   }, [email, dispatch]);
+
+  const fetchUserPlaylists = async (email) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/user/playlists/${email}`
+      );
+      if (response.data) {
+        setPlaylists(response.data.playlists);
+      }
+    } catch (error) {
+      console.error("Error fetching playlists: ", error);
+    }
+  };
 
   useEffect(() => {
     window.onscroll = () => {
@@ -90,84 +107,104 @@ export default function Playlist() {
     }
   };
 
+  const handleCreatePlaylist = async () => {
+    if (email && playlistName) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/user/create-playlist",
+          { email, name: playlistName }
+        );
+        if (response.data.msg === "success") {
+          fetchUserPlaylists(email);
+          setPlaylistName("");
+        }
+      } catch (error) {
+        console.error("Error creating playlist: ", error);
+      }
+    }
+  };
+
+  const handleDeletePlaylist = async (e, name) => {
+    e.stopPropagation(); 
+    if (email && name) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/user/delete-playlist",
+          { email, name }
+        );
+        if (response.data.msg === "success") {
+          fetchUserPlaylists(email);
+          setDeleteMessage(`Playlist '${name}' deleted successfully.`);
+          setTimeout(() => setDeleteMessage(""), 2000);
+        }
+      } catch (error) {
+        console.error("Error deleting playlist: ", error);
+      }
+    }
+  };
+
+  const handlePlaylistClick = (name) => {
+    navigate(`/myplaylist/${name}`);
+  };
+
   return (
-    <Container>
+    <div className="min-h-screen bg-black text-white">
       <Navbar isScrolled={isScrolled} />
-      <div className="content flex column">
-        {movies && movies.length > 0 ? <h1>My Playlist</h1> : ""}
-        {movies && movies.length > 0 ? (
-          <>
-            {publicc ? (
-              <button
-                onClick={handlePrivate}
-                className="mx-[620px] px-12 bg-slate-50 text-black flex justify-center rounded-2xl font-bold"
-              >
-                Make it Private
-              </button>
-            ) : (
-              <button
-                onClick={handlePublic}
-                className="mx-[620px] px-12 bg-slate-50 text-black flex justify-center rounded-2xl font-bold"
-              >
-                Share Public
-              </button>
-            )}
-            {isCopied && (
-              <p className="text-green-500 flex justify-center font-bold">
-                Link copied to clipboard!
-              </p>
-            )}
-          </>
-        ) : (
-          ""
-        )}
-        <div className="grid flex">
-          {movies && movies.length > 0 ? (
-            movies.map((movie, index) => (
-              <Card
-                movieData={movie}
-                index={index}
-                key={movie.id}
-                isLiked={true}
-              />
-            ))
+      <div className="flex flex-col items-center mt-44">
+        <div className="create-playlist flex flex-col items-center space-y-4">
+          <input
+            type="text"
+            className="text-white w-[520px] bg-black rounded-lg px-4 py-2 border border-white"
+            placeholder="New Playlist Name"
+            value={playlistName}
+            onChange={(e) => setPlaylistName(e.target.value)}
+          />
+          <button
+            onClick={handleCreatePlaylist}
+            className="w-60 rounded-3xl text-white font-semibold bg-green-600 hover:bg-green-800 px-4 py-1"
+          >
+            Create Playlist
+          </button>
+          {deleteMessage && (
+            <div className="text-green-500 mt-2">{deleteMessage}</div>
+          )}
+        </div>
+        <div className=" mt-12 flex mb-4">
+          {playlists.length > 0 ? (
+            <h2>My Playlists</h2>
           ) : (
-            <h2 className="text-red-500 text-xl bold flex ml-[650px]">
-              Your Playlist is Empty
+            <h2 className="text-red-500 text-lg font-bold">
+              No Playlists Available
             </h2>
           )}
         </div>
+        <div
+          className={`playlists grid grid-cols-3 gap-4 ml-20 ${
+            playlists.length <= 15 ? "max-h-[600px] overflow-y-hidden" : ""
+          }`}
+        >
+          {playlists.length > 0
+            ? playlists.map((playlist) => (
+                <div
+                  className="playlist-card text-white bg-gray-900 rounded-lg p-4 cursor-pointer w-96 flex justify-between items-center"
+                  key={playlist.uuid}
+                  onClick={() => handlePlaylistClick(playlist.name)}
+                >
+                  <h3>{playlist.name}</h3>
+                  <div
+                    className="text-red-500 cursor-pointer hover:text-red-700"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePlaylist(e, playlist.name);
+                    }}
+                  >
+                    Delete
+                  </div>
+                </div>
+              ))
+            : ""}
+        </div>
       </div>
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-  .content {
-    margin: 2.3rem;
-    margin-top: 8rem;
-    gap: 3rem;
-    h1 {
-      margin-left: 3rem;
-    }
-    .grid {
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .share-link {
-      margin-top: 1rem;
-      p {
-        margin: 0;
-      }
-      a {
-        color: blue;
-        text-decoration: underline;
-      }
-    }
-  }
-
-  .empty-list-message {
-    margin: 20px;
-    color: red;
-  }
-`;

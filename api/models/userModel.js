@@ -8,15 +8,20 @@ const userSchema = new mongoose.Schema({
     unique: true,
     maxlength: 50,
   },
-  likedMovies: Array,
-  uuid: {
-    type: String,
-    default: uuidv4,
-  },
-  public: {
-    type: Boolean,
-    default: false,
-  },
+  playlists: [
+    {
+      name: String,
+      uuid: {
+        type: String,
+        default: uuidv4,
+      },
+      likedMovies: Array,
+      public: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
 });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);

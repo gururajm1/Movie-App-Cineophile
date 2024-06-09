@@ -28,7 +28,6 @@ export default function Slider({ movies }) {
     return (
       <Container
         className="flex column"
-        showControls={showControls}
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
       >
