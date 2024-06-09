@@ -1,7 +1,7 @@
 # CINEOPHILE SETUP
 #### NOTE❌❌: If You are Using JIO data or JIO Fibernet the api will not Work and you might need to use VPN else the API will get Restricted
 
-https://github.com/gururajm1/Movie-App-Cineophile/assets/107309944/2d5b63c2-3c67-48d0-8ba4-1cb7fa26e57d
+https://github.com/gururajm1/Movie-App-Cineophile/assets/107309944/02bb1221-9897-45e1-b585-f6d6d91f38c7
 
 
 ## Overview
